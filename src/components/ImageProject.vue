@@ -48,7 +48,7 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import * as tf from '@tensorflow/tfjs';
-import * as tmPose from '@teachablemachine/pose';
+import * as tmImage from '@teachablemachine/image';
 import data from '../assets/data.json'
 export default {
 	data: () => ({
@@ -67,16 +67,17 @@ export default {
 			const modelURL = this.URL + "model.json";
 			const metadataURL = this.URL + "metadata.json";
 
-			 // load the model and metadata
-			 // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-			 // Note: the pose library adds a tmPose object to your window (window.tmPose)
-			this.model = await tmPose.load(modelURL, metadataURL);
+			// load the model and metadata
+			// Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+			// or files from your local hard drive
+			// Note: the pose library adds "tmImage" object to your window (window.tmImage)
+			this.model = await tmImage.load(modelURL, metadataURL);
 			this.maxPredictions = this.model.getTotalClasses();
 
 			// Convenience function to setup a webcam
 			const flip = true; // whether to flip the webcam
 			const width = 376
-			this.webcam = new tmPose.Webcam(width, width, flip); // width, height, flip
+			this.webcam = new tmImage.Webcam(width, width, flip); // width, height, flip
 			await this.webcam.setup(); // request access to the webcam
 			await this.webcam.play();
 			window.requestAnimationFrame(this.loop);
@@ -91,33 +92,20 @@ export default {
 		},
 		async predict () {
 			// predict can take in an image, video or canvas html element
-			const { pose, posenetOutput } = await this.model.estimatePose(this.webcam.canvas);
-			const prediction = await this.model.predict(posenetOutput);
+			const prediction = await this.model.predict(this.webcam.canvas);
 			let isPrediction = false
 			
 			for (let i = 0; i < this.maxPredictions; i++) {
 				if (prediction[i].probability.toFixed(2) === '1.00') {
 					const item = data[prediction[i].className] 
 					this.resultItem = item			
-					isPrediction = true
-					drawPose(pose)
+					isPrediction = true					
 				}
 			}
 			if (isPrediction === false) {
 				this.resultItem = null
 			}					
-		},
-		drawPose(pose) {
-			if (webcam.canvas) {
-				ctx.drawImage(webcam.canvas, 0, 0);
-				// draw the keypoints and skeleton
-				if (pose) {
-					const minPartConfidence = 0.5;
-					tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-					tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-				}
-			}
-		}
+		}		
     }
 }
 </script>
