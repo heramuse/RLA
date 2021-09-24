@@ -10,7 +10,7 @@
 								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>
 								<v-layout title>
 									<v-spacer></v-spacer>
-									<v-flex shrink>메시지</v-flex>
+									<v-flex shrink></v-flex>
 									<v-flex shrink primary--text pl-3>{{ resultItem.message }}</v-flex>
 								</v-layout>
 								<v-divider class="my-6"></v-divider>
