@@ -1,35 +1,18 @@
 <template>
   <v-container :style="{ maxWidth: '800px' }">
       <v-row>
-          <v-col cols="6">
+          <v-col cols="2">
 						<div id="webcam-container"></div>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="2">
 						<v-card v-if="resultItem" class="fill-height ">
 							<v-card-text>
-								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>
-								<v-layout title>
-									<v-spacer></v-spacer>
-									<v-flex shrink>칼로리</v-flex>
-									<v-flex shrink primary--text pl-3>{{ resultItem.calorie }}</v-flex>
-								</v-layout>
+								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>								
 								<v-divider class="my-6"></v-divider>
 								<v-layout title>
-									<v-flex xs4 grey--text>지방</v-flex>
-									<v-flex>{{ resultItem.fat }}</v-flex>
-								</v-layout>
-								<v-layout title mt-2>
-									<v-flex xs4 grey--text>탄수화물</v-flex>
-									<v-flex>{{ resultItem.carbohydrate }}</v-flex>
-								</v-layout>
-								<v-layout title mt-2>
-									<v-flex xs4 grey--text>단백질</v-flex>
-									<v-flex>{{ resultItem.protein }}</v-flex>
-								</v-layout>
-								<v-layout title mt-2>
-									<v-flex xs4 grey--text>당류</v-flex>
-									<v-flex>{{ resultItem.sugars }}</v-flex>
-								</v-layout>
+									<v-flex xs4 grey--text>메시지</v-flex>
+									<v-flex>{{ resultItem.message }}</v-flex>
+								</v-layout>								
 							</v-card-text>
 						</v-card>
 						<v-card v-show="resultItem === null" class="fill-height">
@@ -52,7 +35,7 @@ import * as tmImage from '@teachablemachine/image';
 import data from '../assets/data.json'
 export default {
 	data: () => ({
-		URL: 'https://teachablemachine.withgoogle.com/models/X960SZyjM/',
+		URL: 'https://teachablemachine.withgoogle.com/models/Ojb24ozAW/',
 		model: null,
 		webcam: null,
 		labelContainer: null,
@@ -94,18 +77,49 @@ export default {
 			// predict can take in an image, video or canvas html element
 			const prediction = await this.model.predict(this.webcam.canvas);
 			let isPrediction = false
-			for (let i = 0; i < this.maxPredictions; i++) {
-				if (prediction[i].probability.toFixed(2) === '1.00') {
-					const item = data[prediction[i].className] // 제로콜라
+			let sleep_cnt = 0
+
+			if (prediction[1].probability > prediction[0].probability) {
+			    sleep_cnt += 1
+				if (sleep_cnt % 30 == 0) {
+					sleep_cnt = 1
+					const item = data[prediction[1].className]
 					this.resultItem = item
 					isPrediction = true
 				}
+			}			
+			else {
+				if (prediction[0].probability.toFixed(2) > '0.9') {										
+					const item = data[prediction[0].className]
+					this.resultItem = item
+					sleep_cnt = 1
+					isPrediction = true
+				}				
 			}
+			for (let i = 0; i < this.maxPredictions; i++) {
+				if (prediction[i].probability.toFixed(2) > '0.9') {										
+					isPrediction = true
+				}
+			}			
 			if (isPrediction === false) {
 				this.resultItem = null
 			}
+			else {
+				drawPose(pose)
+			}		
+		},
+		drawPose(pose) {
+			if (webcam.canvas) {
+				ctx.drawImage(webcam.canvas, 0, 0);
+				// draw the keypoints and skeleton
+				if (pose) {
+					const minPartConfidence = 0.5;
+					tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+					tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+				}
+			}
 		}
-	}
+    }
 }
 </script>
 
