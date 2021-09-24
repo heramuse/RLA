@@ -1,26 +1,10 @@
 {
-    "단백질바": {
-        "name": "단백질바",
-        "calorie": "261kcal",
-        "fat": "15g",
-        "carbohydrate": "18.5g",
-        "protein": "13g",
-        "sugars": "7g"
+    "앉은자세": {
+        "name": "앉은자세",
+        "message": "잘하고 계시네요"         
     },
-    "제로콜라": {
-        "name": "제로콜라",
-        "calorie": "0kcal",
-        "fat": "0g",
-        "carbohydrate": "0g",
-        "protein": "0g",
-        "sugars": "0g"
-    },
-    "닭가슴살": {
-        "name": "닭가슴살",
-        "calorie": "117.8kcal",
-        "fat": "1.76g",
-        "carbohydrate": "0.97g",
-        "protein": "24.52g",
-        "sugars": "0.91g"
+    "엎드린자세": {
+        "name": "엎드린자세",
+        "message": "정신차리세요."        
     }
 }
