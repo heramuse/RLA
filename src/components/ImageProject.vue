@@ -52,7 +52,7 @@ import * as tmImage from '@teachablemachine/image';
 import data from '../assets/data.json'
 export default {
 	data: () => ({
-		URL: 'https://teachablemachine.withgoogle.com/models/Ojb24ozAW/',
+		URL: 'https://teachablemachine.withgoogle.com/models/UuniUW9Yp/',		
 		model: null,
 		webcam: null,
 		labelContainer: null,
@@ -71,13 +71,13 @@ export default {
 			// Refer to tmImage.loadFromFiles() in the API to support files from a file picker
 			// or files from your local hard drive
 			// Note: the pose library adds "tmImage" object to your window (window.tmImage)
-			this.model = await tmImage.load(modelURL, metadataURL);
+			this.model = await tmPose.load(modelURL, metadataURL);
 			this.maxPredictions = this.model.getTotalClasses();
 
 			// Convenience function to setup a webcam
 			const flip = true; // whether to flip the webcam
 			const width = 376
-			this.webcam = new tmImage.Webcam(width, width, flip); // width, height, flip
+			this.webcam = new tmPose.Webcam(width, width, flip); // width, height, flip
 			await this.webcam.setup(); // request access to the webcam
 			await this.webcam.play();
 			window.requestAnimationFrame(this.loop);
@@ -92,7 +92,8 @@ export default {
 		},
 		async predict () {
 			// predict can take in an image, video or canvas html element
-			const prediction = await this.model.predict(this.webcam.canvas);
+			const { pose, posenetOutput } = await this.model.estimatePose(this.webcam.canvas);
+			const prediction = await this.model.predict(posenetOutput);
 			let isPrediction = false
 			
 			for (let i = 0; i < this.maxPredictions; i++) {
