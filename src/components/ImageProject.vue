@@ -7,19 +7,36 @@
           <v-col cols="6">
 						<v-card v-if="resultItem" class="fill-height ">
 							<v-card-text>
-								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>								
+								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>
+								<v-layout title>
+									<v-spacer></v-spacer>
+									<v-flex shrink>메시지</v-flex>
+									<v-flex shrink primary--text pl-3>{{ resultItem.message }}</v-flex>
+								</v-layout>
 								<v-divider class="my-6"></v-divider>
 								<v-layout title>
-									<v-flex xs4 grey--text>메시지</v-flex>
-									<v-flex>{{ resultItem.message }}</v-flex>
-								</v-layout>								
+									<v-flex xs4 grey--text></v-flex>
+									<v-flex>{{ resultItem.m1 }}</v-flex>
+								</v-layout>
+								<v-layout title mt-2>
+									<v-flex xs4 grey--text></v-flex>
+									<v-flex>{{ resultItem.m2 }}</v-flex>
+								</v-layout>
+								<v-layout title mt-2>
+									<v-flex xs4 grey--text></v-flex>
+									<v-flex>{{ resultItem.m3 }}</v-flex>
+								</v-layout>
+								<v-layout title mt-2>
+									<v-flex xs4 grey--text></v-flex>
+									<v-flex>{{ resultItem.m4 }}</v-flex>
+								</v-layout>
 							</v-card-text>
 						</v-card>
 						<v-card v-show="resultItem === null" class="fill-height">
 							<v-layout fill-height justify-center align-center row wrap>
 								<v-flex shrink xs12 text-center>
 									<v-img :style="{ margin: '0 auto' }" :width="100" :src="require('@/assets/smail.png')"></v-img>
-									<div class="grey--text text--darken-1 mt-2">제품을 카메라에 보여주세요~!</div>
+									<div class="grey--text text--darken-1 mt-2">자신의 모습을 카메라에 보여주세요~!</div>
 								</v-flex >
 							</v-layout>
 						</v-card>
@@ -79,34 +96,16 @@ export default {
 			let isPrediction = false
 			let sleep_cnt = 0
 
-			if (prediction[1].probability > prediction[0].probability) {
-			    sleep_cnt += 1
-				if (sleep_cnt % 30 == 0) {
-					sleep_cnt = 1
-					const item = data[prediction[1].className]
-					this.resultItem = item
-					isPrediction = true
-				}
-			}			
-			else {
-				if (prediction[0].probability.toFixed(2) > '0.9') {										
-					const item = data[prediction[0].className]
-					this.resultItem = item
-					sleep_cnt = 1
-					isPrediction = true
-				}				
-			}
 			for (let i = 0; i < this.maxPredictions; i++) {
-				if (prediction[i].probability.toFixed(2) > '0.9') {										
+				if (prediction[i].probability.toFixed(2) === '1.00') {
+					const item = data[prediction[i].className] 
 					isPrediction = true
+					drawPose(pose)
 				}
-			}			
+			}
 			if (isPrediction === false) {
 				this.resultItem = null
-			}
-			else {
-				drawPose(pose)
-			}		
+			}					
 		},
 		drawPose(pose) {
 			if (webcam.canvas) {
