@@ -96,7 +96,7 @@ export default {
 			let isPrediction = false
 			
 			for (let i = 0; i < this.maxPredictions; i++) {
-				if (prediction[i].probability.toFixed(2) === '1.00') {
+				if (prediction[i].probability.toFixed(2) > '0.90') {
 					const item = data[prediction[i].className] 
 					this.resultItem = item			
 					isPrediction = true					
