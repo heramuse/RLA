@@ -48,7 +48,7 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import * as tf from '@tensorflow/tfjs';
-import * as tmImage from '@teachablemachine/image';
+import * as tmPose from '@teachablemachine/pose';
 import data from '../assets/data.json'
 export default {
 	data: () => ({
@@ -67,10 +67,9 @@ export default {
 			const modelURL = this.URL + "model.json";
 			const metadataURL = this.URL + "metadata.json";
 
-			// load the model and metadata
-			// Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-			// or files from your local hard drive
-			// Note: the pose library adds "tmImage" object to your window (window.tmImage)
+			 // load the model and metadata
+			 // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+			 // Note: the pose library adds a tmPose object to your window (window.tmPose)
 			this.model = await tmPose.load(modelURL, metadataURL);
 			this.maxPredictions = this.model.getTotalClasses();
 
