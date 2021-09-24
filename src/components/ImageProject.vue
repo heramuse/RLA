@@ -1,10 +1,10 @@
 <template>
   <v-container :style="{ maxWidth: '800px' }">
       <v-row>
-          <v-col cols="2">
+          <v-col cols="6">
 						<div id="webcam-container"></div>
           </v-col>
-          <v-col cols="2">
+          <v-col cols="6">
 						<v-card v-if="resultItem" class="fill-height ">
 							<v-card-text>
 								<div class="text-h4 black--text font-weight-bold">{{ resultItem.name }}</div>								
