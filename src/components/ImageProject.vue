@@ -52,7 +52,7 @@ import * as tmImage from '@teachablemachine/image';
 import data from '../assets/data.json'
 export default {
 	data: () => ({
-		URL: 'https://teachablemachine.withgoogle.com/models/UuniUW9Yp/',		
+		URL: 'https://teachablemachine.withgoogle.com/models/FSAzmZEcF/',		
 		model: null,
 		webcam: null,
 		labelContainer: null,
