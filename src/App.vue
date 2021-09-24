@@ -24,7 +24,7 @@ export default {
     ImageProject
   },
   data: () => ({
-    title: '짐코딩 칼로리'
+    title: '자율학습 도움미'
   }),
 };
 </script>
