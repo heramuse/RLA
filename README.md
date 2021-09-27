@@ -1,4 +1,4 @@
-# teachable-machine-web
+# RLA(Remote learning assistant system).
 구글 AI기술인 Teachable Machine을 활용한 웹 서비스 만들기 (유튜브 튜토리얼 용)
 
 ## 사용기술
